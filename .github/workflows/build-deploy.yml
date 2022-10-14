@@ -35,7 +35,24 @@ jobs:
           push: true
           tags: |
             ${{ steps.login-ecr.outputs.registry }}/${{ env.SERVICE_NAME }}:${{ github.sha }}
-
     # This part is important - it will be used by the deploy job
     outputs:
       image: "${{ steps.login-ecr.outputs.registry }}/${{ env.SERVICE_NAME }}:${{ github.sha }}"
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # Update the backend service to use the new image.
+      - name: Deploy
+        uses: duplocloud/ghactions-service-update@master
+        with:
+          tenant: "${{ env.TENANT_NAME }}"
+          services: |-
+            [
+              { "Name": "${{ env.SERVICE_NAME }}", "Image": "${{ needs.build.outputs.image }}" }
+            ]
