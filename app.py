@@ -3,6 +3,7 @@
 import time
 
 import os
+import datetime
 
 from flask import Flask
 
@@ -19,6 +20,7 @@ def endpoints():
     endpoint = "<b>Endpoints</b> : <br/>"
     endpoint += "1. List of environment variables - [/env-list]<br/>"
     endpoint += "2. Hello - [/hello/(name)]<br/>"
+    endpoint += "3. Get current time - [/current-time]<br/>"
     return endpoint
 
 
@@ -28,6 +30,12 @@ def path():
     for k, v in sorted(os.environ.items()):
         env_list += k + ":" + v + "<br/>"
     return env_list
+
+
+@app.route('/current-time')
+def current_time():
+    date = datetime.datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")
+    return date
 
 
 @app.route('/hello/<name>')
