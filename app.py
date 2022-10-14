@@ -21,6 +21,7 @@ def endpoints():
     endpoint += "1. List of environment variables - [/env-list]<br/>"
     endpoint += "2. Hello - [/hello/(name)]<br/>"
     endpoint += "3. Get current time - [/current-time]<br/>"
+    endpoint += "4. Get Duplo Details - [/duplo]<br/>"
     return endpoint
 
 
@@ -41,6 +42,11 @@ def current_time():
 @app.route('/hello/<name>')
 def hello(name):
     return "Hello \"%s\" !" % name
+
+
+@app.route('/duplo')
+def duplo():
+    return "All-in-One DevSecOps Automation Platform"
 
 
 if __name__ == "__main__":
